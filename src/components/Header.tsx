@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Menu } from "lucide-react";
+import { ShoppingCart, Menu, Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface HeaderProps {
   cartItemCount: number;
@@ -40,19 +41,26 @@ const Header = ({ cartItemCount, onCartOpen }: HeaderProps) => {
           </a>
         </nav>
 
-        <Button 
-          variant="outline" 
-          size="icon" 
-          onClick={onCartOpen}
-          className="relative"
-        >
-          <ShoppingCart className="h-4 w-4" />
-          {cartItemCount > 0 && (
-            <span className="absolute -top-2 -right-2 bg-electric text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-              {cartItemCount}
-            </span>
-          )}
-        </Button>
+        <div className="flex items-center gap-2">
+          <Link to="/wishlist">
+            <Button variant="outline" size="icon">
+              <Heart className="h-4 w-4" />
+            </Button>
+          </Link>
+          <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={onCartOpen}
+            className="relative"
+          >
+            <ShoppingCart className="h-4 w-4" />
+            {cartItemCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-electric text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {cartItemCount}
+              </span>
+            )}
+          </Button>
+        </div>
       </div>
     </header>
   );

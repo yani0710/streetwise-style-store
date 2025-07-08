@@ -18,6 +18,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        electric: "bg-gradient-electric text-white hover:shadow-electric transform hover:scale-105 transition-all duration-300",
+        streetwear: "bg-primary text-primary-foreground border-2 border-electric hover:bg-electric hover:border-primary transform hover:scale-105 transition-all duration-300",
+        cart: "bg-electric text-white hover:bg-electric-dark shadow-electric transform hover:scale-105 transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",

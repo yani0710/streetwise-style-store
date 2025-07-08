@@ -20,7 +20,7 @@ const Header = ({ cartItemCount, onCartOpen }: HeaderProps) => {
         </div>
         
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#tshirts" className="text-sm font-medium hover:text-electric transition-colors">
+          <a href="#t-shirts" className="text-sm font-medium hover:text-electric transition-colors">
             T-Shirts
           </a>
           <a href="#shorts" className="text-sm font-medium hover:text-electric transition-colors">

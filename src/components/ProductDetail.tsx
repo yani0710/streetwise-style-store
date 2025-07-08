@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -28,19 +28,70 @@ const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) =>
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentPrice, setCurrentPrice] = useState<number>(0);
+
+  // Reset state when product changes
+  useEffect(() => {
+    if (product) {
+      setSelectedSize("");
+      setSelectedColor("");
+      setCurrentImageIndex(0);
+      setCurrentPrice(product.price);
+    }
+  }, [product]);
+
+  // Handle dynamic image switching based on color selection
+  useEffect(() => {
+    if (product && selectedColor && product.images) {
+      const colorToImageMap: Record<string, number> = {
+        "Black": 0,
+        "White": 1,
+        "Gray": 1,
+        "Silver": 0,
+        "Gold": 0
+      };
+      
+      const imageIndex = colorToImageMap[selectedColor] ?? 0;
+      if (imageIndex < product.images.length) {
+        setCurrentImageIndex(imageIndex);
+      }
+    }
+  }, [selectedColor, product]);
+
+  // Handle dynamic pricing for fragrances based on size
+  useEffect(() => {
+    if (product && selectedSize && product.category === "Fragrances") {
+      const basePrice = product.price;
+      if (selectedSize === "50ml") {
+        setCurrentPrice(Math.round(basePrice * 0.65)); // 65% of base price for 50ml
+      } else if (selectedSize === "100ml") {
+        setCurrentPrice(basePrice); // Full price for 100ml
+      }
+    } else if (product) {
+      setCurrentPrice(product.price);
+    }
+  }, [selectedSize, product]);
 
   if (!product) return null;
 
   const images = product.images || [product.image];
-  const sizes = product.sizes || ["XS", "S", "M", "L", "XL"];
-  const colors = product.colors || ["Black", "White"];
+  const sizes = product.sizes || [];
+  const colors = product.colors || [];
 
   const handleAddToCart = () => {
     if ((sizes.length > 0 && !selectedSize) || (colors.length > 0 && !selectedColor)) {
       alert("Please select size and color");
       return;
     }
-    onAddToCart(product, selectedSize, selectedColor);
+    
+    // Pass the product with current price and image
+    const productToAdd = {
+      ...product,
+      price: currentPrice,
+      image: images[currentImageIndex]
+    };
+    
+    onAddToCart(productToAdd, selectedSize, selectedColor);
     onClose();
   };
 
@@ -110,7 +161,19 @@ const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) =>
                       </div>
                     )}
                   </div>
-                  <p className="text-3xl font-bold text-electric">${product.price}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-3xl font-bold text-electric">${currentPrice}</p>
+                    {product.category === "Fragrances" && selectedSize === "50ml" && (
+                      <span className="text-base text-muted-foreground line-through">
+                        ${product.price}
+                      </span>
+                    )}
+                  </div>
+                  {product.category === "Fragrances" && selectedSize === "50ml" && (
+                    <p className="text-sm text-green-600 font-medium">
+                      Save ${(product.price - currentPrice).toFixed(0)} with 50ml size!
+                    </p>
+                  )}
                 </div>
 
                 {product.description && (
@@ -123,7 +186,9 @@ const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) =>
                 {/* Size Selection */}
                 {sizes.length > 0 && (
                   <div>
-                    <h3 className="font-semibold mb-3">Size</h3>
+                    <h3 className="font-semibold mb-3">
+                      {product.category === "Fragrances" ? "Volume" : "Size"}
+                    </h3>
                     <div className="flex flex-wrap gap-2">
                       {sizes.map((size) => (
                         <Button
@@ -156,6 +221,11 @@ const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) =>
                         </Button>
                       ))}
                     </div>
+                    {selectedColor && (
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Selected: {selectedColor}
+                      </p>
+                    )}
                   </div>
                 )}
 
@@ -168,7 +238,7 @@ const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) =>
                     onClick={handleAddToCart}
                   >
                     <ShoppingCart className="h-4 w-4 mr-2" />
-                    Add to Cart
+                    Add to Cart - ${currentPrice}
                   </Button>
                   <Button variant="outline" size="lg" className="w-full">
                     <Heart className="h-4 w-4 mr-2" />
@@ -180,9 +250,9 @@ const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) =>
                 <div className="border-t pt-6">
                   <h3 className="font-semibold mb-3">Product Details</h3>
                   <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li>• Premium cotton blend fabric</li>
+                    <li>• Premium materials</li>
                     <li>• Machine washable</li>
-                    <li>• Modern streetwear fit</li>
+                    <li>• Modern streetwear design</li>
                     <li>• Imported</li>
                   </ul>
                 </div>

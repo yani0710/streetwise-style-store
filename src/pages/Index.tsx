@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
 import ProductDetail from "@/components/ProductDetail";
 import Cart from "@/components/Cart";
+import Checkout from "@/pages/Checkout";
 import { Button } from "@/components/ui/button";
 
 // Import product images
@@ -195,12 +196,65 @@ const products: Product[] = [
     rating: 4.4,
     reviews: 134
   },
+  {
+    id: 13,
+    name: "Midnight Hoodie",
+    price: 159,
+    image: tshirtBlack, // Using existing image for now
+    category: "Hoodies",
+    description: "Premium oversized hoodie with minimalist streetwear design. Ultimate comfort meets urban style.",
+    images: [tshirtBlack, tshirtWhite],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Black", "White"],
+    rating: 4.8,
+    reviews: 312
+  },
+  {
+    id: 14,
+    name: "Electric Joggers",
+    price: 119,
+    image: shortsBlack, // Using existing image for now
+    category: "Joggers",
+    description: "Comfortable tapered joggers with electric blue details. Perfect for casual urban adventures.",
+    images: [shortsBlack, shortsGray],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Black", "Gray"],
+    rating: 4.5,
+    reviews: 189
+  },
+  {
+    id: 15,
+    name: "Street Cap",
+    price: 59,
+    image: tshirtBlack, // Using existing image for now
+    category: "Accessories",
+    description: "Classic streetwear cap with embroidered URBX logo. Adjustable fit for all-day comfort.",
+    images: [tshirtBlack],
+    sizes: ["One Size"],
+    colors: ["Black", "White"],
+    rating: 4.3,
+    reviews: 267
+  },
+  {
+    id: 16,
+    name: "Urban Backpack",
+    price: 199,
+    image: tshirtBlack, // Using existing image for now
+    category: "Accessories",
+    description: "Premium streetwear backpack with multiple compartments. Perfect for urban commuting and style.",
+    images: [tshirtBlack],
+    sizes: ["One Size"],
+    colors: ["Black"],
+    rating: 4.7,
+    reviews: 145
+  },
 ];
 
 const Index = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [showCheckout, setShowCheckout] = useState(false);
 
   const addToCart = (product: Product) => {
     setCartItems(prevItems => {
@@ -235,8 +289,13 @@ const Index = () => {
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   const handleCheckout = () => {
-    // For now, we'll show an alert. The user will need to set up Stripe for real payments.
-    alert(`Checkout functionality requires payment integration. Total: $${cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}`);
+    setIsCartOpen(false);
+    setShowCheckout(true);
+  };
+
+  const handleOrderComplete = () => {
+    setCartItems([]);
+    setShowCheckout(false);
   };
 
   const productsByCategory = products.reduce((acc, product) => {
@@ -246,6 +305,10 @@ const Index = () => {
     acc[product.category].push(product);
     return acc;
   }, {} as Record<string, Product[]>);
+
+  if (showCheckout) {
+    return <Checkout cartItems={cartItems} onOrderComplete={handleOrderComplete} />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -262,7 +325,7 @@ const Index = () => {
         </div>
 
         {Object.entries(productsByCategory).map(([category, categoryProducts]) => (
-          <section key={category} id={category.toLowerCase()} className="mb-16">
+          <section key={category} id={category.toLowerCase().replace(/\s+/g, '-')} className="mb-16">
             <div className="flex items-center justify-between mb-8">
               <h3 className="text-3xl font-bold">{category}</h3>
               <Button variant="outline">View All</Button>
@@ -307,7 +370,7 @@ const Index = () => {
             <div>
               <h5 className="font-semibold mb-4">Shop</h5>
               <ul className="space-y-2 text-sm opacity-80">
-                <li><a href="#tshirts" className="hover:text-electric transition-colors">T-Shirts</a></li>
+                <li><a href="#t-shirts" className="hover:text-electric transition-colors">T-Shirts</a></li>
                 <li><a href="#shorts" className="hover:text-electric transition-colors">Shorts</a></li>
                 <li><a href="#sneakers" className="hover:text-electric transition-colors">Sneakers</a></li>
                 <li><a href="#jewelry" className="hover:text-electric transition-colors">Jewelry</a></li>

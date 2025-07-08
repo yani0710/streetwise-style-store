@@ -2,16 +2,23 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ProductCard from "@/components/ProductCard";
+import ProductDetail from "@/components/ProductDetail";
 import Cart from "@/components/Cart";
 import { Button } from "@/components/ui/button";
 
 // Import product images
 import tshirtBlack from "@/assets/tshirt-black.jpg";
+import tshirtWhite from "@/assets/tshirt-white.jpg";
 import sneakersWhite from "@/assets/sneakers-white.jpg";
+import sneakersBlack from "@/assets/sneakers-black.jpg";
 import shortsBlack from "@/assets/shorts-black.jpg";
+import shortsGray from "@/assets/shorts-gray.jpg";
 import jewelryChain from "@/assets/jewelry-chain.jpg";
+import jewelryBracelet from "@/assets/jewelry-bracelet.jpg";
 import socksBlack from "@/assets/socks-black.jpg";
+import socksWhite from "@/assets/socks-white.jpg";
 import fragranceBlack from "@/assets/fragrance-black.jpg";
+import fragranceWhite from "@/assets/fragrance-white.jpg";
 
 interface Product {
   id: number;
@@ -19,6 +26,12 @@ interface Product {
   price: number;
   image: string;
   category: string;
+  description?: string;
+  images?: string[];
+  sizes?: string[];
+  colors?: string[];
+  rating?: number;
+  reviews?: number;
 }
 
 interface CartItem extends Product {
@@ -26,17 +39,168 @@ interface CartItem extends Product {
 }
 
 const products: Product[] = [
-  { id: 1, name: "Urban Black Tee", price: 89, image: tshirtBlack, category: "T-Shirts" },
-  { id: 2, name: "Electric Sneakers", price: 249, image: sneakersWhite, category: "Sneakers" },
-  { id: 3, name: "Street Shorts", price: 129, image: shortsBlack, category: "Shorts" },
-  { id: 4, name: "Chain Link Necklace", price: 199, image: jewelryChain, category: "Jewelry" },
-  { id: 5, name: "Urban Socks", price: 29, image: socksBlack, category: "Socks" },
-  { id: 6, name: "URBX Signature", price: 179, image: fragranceBlack, category: "Fragrances" },
+  { 
+    id: 1, 
+    name: "Urban Black Tee", 
+    price: 89, 
+    image: tshirtBlack, 
+    category: "T-Shirts",
+    description: "Premium cotton streetwear t-shirt with modern urban design. Perfect for everyday wear with exceptional comfort and style.",
+    images: [tshirtBlack, tshirtWhite],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Black", "White"],
+    rating: 4.5,
+    reviews: 124
+  },
+  { 
+    id: 2, 
+    name: "Electric White Tee", 
+    price: 89, 
+    image: tshirtWhite, 
+    category: "T-Shirts",
+    description: "Clean white premium t-shirt with electric blue accents. Minimalist design meets streetwear culture.",
+    images: [tshirtWhite, tshirtBlack],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["White", "Black"],
+    rating: 4.7,
+    reviews: 89
+  },
+  { 
+    id: 3, 
+    name: "Electric Sneakers", 
+    price: 249, 
+    image: sneakersWhite, 
+    category: "Sneakers",
+    description: "High-performance streetwear sneakers with electric blue details. Comfortable, durable, and stylish.",
+    images: [sneakersWhite, sneakersBlack],
+    sizes: ["7", "8", "9", "10", "11", "12"],
+    colors: ["White", "Black"],
+    rating: 4.8,
+    reviews: 256
+  },
+  { 
+    id: 4, 
+    name: "Shadow Black Sneakers", 
+    price: 249, 
+    image: sneakersBlack, 
+    category: "Sneakers",
+    description: "Sleek black high-top sneakers with premium materials. Perfect for the urban street style.",
+    images: [sneakersBlack, sneakersWhite],
+    sizes: ["7", "8", "9", "10", "11", "12"],
+    colors: ["Black", "White"],
+    rating: 4.6,
+    reviews: 198
+  },
+  { 
+    id: 5, 
+    name: "Street Shorts", 
+    price: 129, 
+    image: shortsBlack, 
+    category: "Shorts",
+    description: "Comfortable premium streetwear shorts with modern cut. Perfect for summer urban adventures.",
+    images: [shortsBlack, shortsGray],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Black", "Gray"],
+    rating: 4.4,
+    reviews: 167
+  },
+  { 
+    id: 6, 
+    name: "Urban Gray Shorts", 
+    price: 129, 
+    image: shortsGray, 
+    category: "Shorts",
+    description: "Versatile gray shorts with urban design elements. Comfort meets style in every detail.",
+    images: [shortsGray, shortsBlack],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Gray", "Black"],
+    rating: 4.3,
+    reviews: 143
+  },
+  { 
+    id: 7, 
+    name: "Chain Link Necklace", 
+    price: 199, 
+    image: jewelryChain, 
+    category: "Jewelry",
+    description: "Premium silver chain necklace with modern streetwear aesthetic. Timeless design with contemporary edge.",
+    images: [jewelryChain],
+    sizes: ["One Size"],
+    colors: ["Silver"],
+    rating: 4.7,
+    reviews: 78
+  },
+  { 
+    id: 8, 
+    name: "Gold Street Bracelet", 
+    price: 149, 
+    image: jewelryBracelet, 
+    category: "Jewelry",
+    description: "Bold gold bracelet perfect for streetwear styling. Makes a statement while maintaining elegance.",
+    images: [jewelryBracelet],
+    sizes: ["One Size"],
+    colors: ["Gold"],
+    rating: 4.5,
+    reviews: 92
+  },
+  { 
+    id: 9, 
+    name: "Urban Black Socks", 
+    price: 29, 
+    image: socksBlack, 
+    category: "Socks",
+    description: "Premium cotton socks with electric blue logo accent. Comfort and style for everyday wear.",
+    images: [socksBlack, socksWhite],
+    sizes: ["S", "M", "L"],
+    colors: ["Black", "White"],
+    rating: 4.2,
+    reviews: 234
+  },
+  { 
+    id: 10, 
+    name: "Electric White Socks", 
+    price: 29, 
+    image: socksWhite, 
+    category: "Socks",
+    description: "Clean white premium socks with black logo details. Perfect complement to any streetwear outfit.",
+    images: [socksWhite, socksBlack],
+    sizes: ["S", "M", "L"],
+    colors: ["White", "Black"],
+    rating: 4.1,
+    reviews: 187
+  },
+  { 
+    id: 11, 
+    name: "URBX Signature Black", 
+    price: 179, 
+    image: fragranceBlack, 
+    category: "Fragrances",
+    description: "Bold and sophisticated fragrance with urban edge. Notes of bergamot, cedar, and musk create a distinctive scent.",
+    images: [fragranceBlack],
+    sizes: ["50ml", "100ml"],
+    colors: ["Black"],
+    rating: 4.6,
+    reviews: 156
+  },
+  { 
+    id: 12, 
+    name: "URBX Signature White", 
+    price: 179, 
+    image: fragranceWhite, 
+    category: "Fragrances",
+    description: "Fresh and modern fragrance perfect for daily wear. Clean notes with hints of citrus and vanilla.",
+    images: [fragranceWhite],
+    sizes: ["50ml", "100ml"],
+    colors: ["White"],
+    rating: 4.4,
+    reviews: 134
+  },
 ];
 
 const Index = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const addToCart = (product: Product) => {
     setCartItems(prevItems => {
@@ -70,6 +234,11 @@ const Index = () => {
 
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
+  const handleCheckout = () => {
+    // For now, we'll show an alert. The user will need to set up Stripe for real payments.
+    alert(`Checkout functionality requires payment integration. Total: $${cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)}`);
+  };
+
   const productsByCategory = products.reduce((acc, product) => {
     if (!acc[product.category]) {
       acc[product.category] = [];
@@ -98,12 +267,13 @@ const Index = () => {
               <h3 className="text-3xl font-bold">{category}</h3>
               <Button variant="outline">View All</Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {categoryProducts.map((product) => (
                 <ProductCard
                   key={product.id}
                   product={product}
                   onAddToCart={addToCart}
+                  onProductClick={setSelectedProduct}
                 />
               ))}
             </div>
@@ -174,6 +344,13 @@ const Index = () => {
         onUpdateQuantity={updateQuantity}
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
+        onCheckout={handleCheckout}
+      />
+
+      <ProductDetail
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={addToCart}
       />
     </div>
   );

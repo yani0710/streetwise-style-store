@@ -19,9 +19,10 @@ interface CartProps {
   onUpdateQuantity: (id: number, quantity: number) => void;
   isOpen: boolean;
   onClose: () => void;
+  onCheckout: () => void;
 }
 
-const Cart = ({ items, onRemoveItem, onUpdateQuantity, isOpen, onClose }: CartProps) => {
+const Cart = ({ items, onRemoveItem, onUpdateQuantity, isOpen, onClose, onCheckout }: CartProps) => {
   const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   if (!isOpen) return null;
@@ -99,7 +100,7 @@ const Cart = ({ items, onRemoveItem, onUpdateQuantity, isOpen, onClose }: CartPr
                 <span>Total:</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <Button variant="electric" className="w-full" size="lg">
+              <Button variant="electric" className="w-full" size="lg" onClick={onCheckout}>
                 Checkout
               </Button>
             </div>

@@ -12,13 +12,17 @@ interface Product {
 interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
+  onProductClick: (product: Product) => void;
 }
 
-const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
+const ProductCard = ({ product, onAddToCart, onProductClick }: ProductCardProps) => {
   return (
     <Card className="group hover:shadow-urban transition-all duration-300 transform hover:scale-105">
       <CardContent className="p-0">
-        <div className="aspect-square overflow-hidden rounded-t-lg">
+        <div 
+          className="aspect-square overflow-hidden rounded-t-lg cursor-pointer"
+          onClick={() => onProductClick(product)}
+        >
           <img
             src={product.image}
             alt={product.name}
@@ -26,7 +30,12 @@ const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
           />
         </div>
         <div className="p-4">
-          <h3 className="font-semibold text-lg mb-2">{product.name}</h3>
+          <h3 
+            className="font-semibold text-lg mb-2 cursor-pointer hover:text-electric transition-colors"
+            onClick={() => onProductClick(product)}
+          >
+            {product.name}
+          </h3>
           <p className="text-muted-foreground mb-3">{product.category}</p>
           <div className="flex items-center justify-between">
             <span className="text-xl font-bold">${product.price}</span>

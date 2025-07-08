@@ -276,6 +276,10 @@ const Checkout = ({ cartItems, onOrderComplete }: CheckoutProps) => {
                       <RadioGroupItem value="apple" id="apple" />
                       <Label htmlFor="apple">Apple Pay</Label>
                     </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="cash" id="cash" />
+                      <Label htmlFor="cash">Cash on Delivery</Label>
+                    </div>
                   </RadioGroup>
                 </CardContent>
               </Card>

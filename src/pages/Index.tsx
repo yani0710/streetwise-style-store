@@ -198,55 +198,107 @@ const products: Product[] = [
   },
   {
     id: 13,
-    name: "Midnight Hoodie",
-    price: 159,
-    image: tshirtBlack, // Using existing image for now
-    category: "Hoodies",
-    description: "Premium oversized hoodie with minimalist streetwear design. Ultimate comfort meets urban style.",
+    name: "Oversized Black Tee",
+    price: 95,
+    image: tshirtBlack,
+    category: "T-Shirts",
+    description: "Relaxed fit premium t-shirt with oversized silhouette. Perfect for layering and street style.",
     images: [tshirtBlack, tshirtWhite],
-    sizes: ["S", "M", "L", "XL", "XXL"],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
     colors: ["Black", "White"],
-    rating: 4.8,
-    reviews: 312
+    rating: 4.6,
+    reviews: 203
   },
   {
     id: 14,
-    name: "Electric Joggers",
-    price: 119,
-    image: shortsBlack, // Using existing image for now
-    category: "Joggers",
-    description: "Comfortable tapered joggers with electric blue details. Perfect for casual urban adventures.",
-    images: [shortsBlack, shortsGray],
-    sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Black", "Gray"],
-    rating: 4.5,
-    reviews: 189
+    name: "Vintage White Tee",
+    price: 79,
+    image: tshirtWhite,
+    category: "T-Shirts",
+    description: "Soft vintage-wash cotton tee with distressed details. Classic streetwear with authentic feel.",
+    images: [tshirtWhite, tshirtBlack],
+    sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["White", "Black"],
+    rating: 4.4,
+    reviews: 178
   },
   {
     id: 15,
-    name: "Street Cap",
-    price: 59,
-    image: tshirtBlack, // Using existing image for now
-    category: "Accessories",
-    description: "Classic streetwear cap with embroidered URBX logo. Adjustable fit for all-day comfort.",
-    images: [tshirtBlack],
-    sizes: ["One Size"],
+    name: "High-Top Street Sneakers",
+    price: 279,
+    image: sneakersBlack,
+    category: "Sneakers",
+    description: "Premium high-top sneakers with leather construction. Statement footwear for urban adventures.",
+    images: [sneakersBlack, sneakersWhite],
+    sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["Black", "White"],
-    rating: 4.3,
-    reviews: 267
+    rating: 4.7,
+    reviews: 341
   },
   {
     id: 16,
-    name: "Urban Backpack",
-    price: 199,
-    image: tshirtBlack, // Using existing image for now
-    category: "Accessories",
-    description: "Premium streetwear backpack with multiple compartments. Perfect for urban commuting and style.",
-    images: [tshirtBlack],
-    sizes: ["One Size"],
-    colors: ["Black"],
-    rating: 4.7,
-    reviews: 145
+    name: "Low-Top Urban Sneakers",
+    price: 229,
+    image: sneakersWhite,
+    category: "Sneakers",
+    description: "Minimalist low-top design with premium materials. Versatile sneakers for any outfit.",
+    images: [sneakersWhite, sneakersBlack],
+    sizes: ["7", "8", "9", "10", "11", "12"],
+    colors: ["White", "Black"],
+    rating: 4.5,
+    reviews: 287
+  },
+  {
+    id: 17,
+    name: "Cargo Shorts",
+    price: 149,
+    image: shortsBlack,
+    category: "Shorts",
+    description: "Functional cargo shorts with multiple pockets. Urban utility meets street style.",
+    images: [shortsBlack, shortsGray],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Black", "Gray"],
+    rating: 4.3,
+    reviews: 156
+  },
+  {
+    id: 18,
+    name: "Mesh Athletic Shorts",
+    price: 109,
+    image: shortsGray,
+    category: "Shorts",
+    description: "Breathable mesh shorts perfect for active wear. Comfort and style for workouts and street.",
+    images: [shortsGray, shortsBlack],
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Gray", "Black"],
+    rating: 4.2,
+    reviews: 134
+  },
+  {
+    id: 19,
+    name: "Crew Socks Pack",
+    price: 39,
+    image: socksBlack,
+    category: "Socks",
+    description: "Pack of 3 premium crew socks with URBX branding. Essential comfort for daily wear.",
+    images: [socksBlack, socksWhite],
+    sizes: ["S", "M", "L"],
+    colors: ["Black", "White"],
+    rating: 4.0,
+    reviews: 298
+  },
+  {
+    id: 20,
+    name: "Athletic Ankle Socks",
+    price: 25,
+    image: socksWhite,
+    category: "Socks",
+    description: "Low-cut athletic socks with moisture-wicking technology. Perfect for sneakers and active wear.",
+    images: [socksWhite, socksBlack],
+    sizes: ["S", "M", "L"],
+    colors: ["White", "Black"],
+    rating: 4.1,
+    reviews: 267
   },
 ];
 
@@ -255,6 +307,7 @@ const Index = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
+  const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
 
   const addToCart = (product: Product) => {
     setCartItems(prevItems => {
@@ -296,6 +349,20 @@ const Index = () => {
   const handleOrderComplete = () => {
     setCartItems([]);
     setShowCheckout(false);
+  };
+
+  const addToWishlist = (product: Product) => {
+    setWishlistItems(prevItems => {
+      const existingItem = prevItems.find(item => item.id === product.id);
+      if (existingItem) {
+        return prevItems.filter(item => item.id !== product.id);
+      }
+      return [...prevItems, product];
+    });
+  };
+
+  const isInWishlist = (productId: number) => {
+    return wishlistItems.some(item => item.id === productId);
   };
 
   const productsByCategory = products.reduce((acc, product) => {
@@ -414,6 +481,8 @@ const Index = () => {
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
         onAddToCart={addToCart}
+        onAddToWishlist={addToWishlist}
+        isInWishlist={selectedProduct ? isInWishlist(selectedProduct.id) : false}
       />
     </div>
   );

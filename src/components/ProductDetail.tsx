@@ -22,9 +22,11 @@ interface ProductDetailProps {
   product: Product | null;
   onClose: () => void;
   onAddToCart: (product: Product, size?: string, color?: string) => void;
+  onAddToWishlist: (product: Product) => void;
+  isInWishlist: boolean;
 }
 
-const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) => {
+const ProductDetail = ({ product, onClose, onAddToCart, onAddToWishlist, isInWishlist }: ProductDetailProps) => {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -240,9 +242,14 @@ const ProductDetail = ({ product, onClose, onAddToCart }: ProductDetailProps) =>
                     <ShoppingCart className="h-4 w-4 mr-2" />
                     Add to Cart - ${currentPrice}
                   </Button>
-                  <Button variant="outline" size="lg" className="w-full">
-                    <Heart className="h-4 w-4 mr-2" />
-                    Add to Wishlist
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full"
+                    onClick={() => onAddToWishlist(product)}
+                  >
+                    <Heart className={`h-4 w-4 mr-2 ${isInWishlist ? 'fill-current text-red-500' : ''}`} />
+                    {isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
                   </Button>
                 </div>
 

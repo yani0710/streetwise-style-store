@@ -22,9 +22,10 @@ interface CartItem {
 interface CheckoutProps {
   cartItems: CartItem[];
   onOrderComplete: () => void;
+  onBackToCart?: () => void;
 }
 
-const Checkout = ({ cartItems, onOrderComplete }: CheckoutProps) => {
+const Checkout = ({ cartItems, onOrderComplete, onBackToCart }: CheckoutProps) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -83,11 +84,18 @@ const Checkout = ({ cartItems, onOrderComplete }: CheckoutProps) => {
   return (
     <div className="min-h-screen bg-background">
       <div className="container py-8">
-        <div className="flex items-center mb-8">
-          <Button variant="ghost" onClick={() => navigate("/")} className="mr-4">
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <h1 className="text-3xl font-bold">Checkout</h1>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center">
+            <Button variant="ghost" onClick={() => navigate("/")} className="mr-4">
+              <ArrowLeft className="h-4 w-4" />
+            </Button>
+            <h1 className="text-3xl font-bold">Checkout</h1>
+          </div>
+          {onBackToCart && (
+            <Button variant="outline" onClick={onBackToCart}>
+              Back to Cart
+            </Button>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

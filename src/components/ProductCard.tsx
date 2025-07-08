@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Heart } from "lucide-react";
 
 interface Product {
   id: number;
@@ -13,14 +14,16 @@ interface ProductCardProps {
   product: Product;
   onAddToCart: (product: Product) => void;
   onProductClick: (product: Product) => void;
+  onAddToWishlist?: (product: Product) => void;
+  isInWishlist?: boolean;
 }
 
-const ProductCard = ({ product, onAddToCart, onProductClick }: ProductCardProps) => {
+const ProductCard = ({ product, onAddToCart, onProductClick, onAddToWishlist, isInWishlist }: ProductCardProps) => {
   return (
     <Card className="group hover:shadow-urban transition-all duration-300 transform hover:scale-105">
       <CardContent className="p-0">
         <div 
-          className="aspect-square overflow-hidden rounded-t-lg cursor-pointer"
+          className="aspect-square overflow-hidden rounded-t-lg cursor-pointer relative"
           onClick={() => onProductClick(product)}
         >
           <img
@@ -28,6 +31,19 @@ const ProductCard = ({ product, onAddToCart, onProductClick }: ProductCardProps)
             alt={product.name}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           />
+          {onAddToWishlist && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="absolute top-2 right-2 bg-background/80 backdrop-blur-sm hover:bg-background"
+              onClick={(e) => {
+                e.stopPropagation();
+                onAddToWishlist(product);
+              }}
+            >
+              <Heart className={`h-4 w-4 ${isInWishlist ? 'fill-red-500 text-red-500' : 'text-muted-foreground'}`} />
+            </Button>
+          )}
         </div>
         <div className="p-4">
           <h3 

@@ -307,7 +307,10 @@ const Index = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
-  const [wishlistItems, setWishlistItems] = useState<Product[]>([]);
+  const [wishlistItems, setWishlistItems] = useState<Product[]>(() => {
+    const saved = localStorage.getItem('wishlist');
+    return saved ? JSON.parse(saved) : [];
+  });
 
   const addToCart = (product: Product) => {
     setCartItems(prevItems => {
@@ -354,10 +357,14 @@ const Index = () => {
   const addToWishlist = (product: Product) => {
     setWishlistItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
+      let updatedItems;
       if (existingItem) {
-        return prevItems.filter(item => item.id !== product.id);
+        updatedItems = prevItems.filter(item => item.id !== product.id);
+      } else {
+        updatedItems = [...prevItems, product];
       }
-      return [...prevItems, product];
+      localStorage.setItem('wishlist', JSON.stringify(updatedItems));
+      return updatedItems;
     });
   };
 
@@ -374,7 +381,13 @@ const Index = () => {
   }, {} as Record<string, Product[]>);
 
   if (showCheckout) {
-    return <Checkout cartItems={cartItems} onOrderComplete={handleOrderComplete} />;
+    return (
+      <Checkout 
+        cartItems={cartItems} 
+        onOrderComplete={handleOrderComplete}
+        onBackToCart={() => setShowCheckout(false)}
+      />
+    );
   }
 
   return (
@@ -404,6 +417,8 @@ const Index = () => {
                   product={product}
                   onAddToCart={addToCart}
                   onProductClick={setSelectedProduct}
+                  onAddToWishlist={addToWishlist}
+                  isInWishlist={isInWishlist(product.id)}
                 />
               ))}
             </div>
@@ -449,7 +464,7 @@ const Index = () => {
                 <li><a href="#" className="hover:text-electric transition-colors">Size Guide</a></li>
                 <li><a href="#" className="hover:text-electric transition-colors">Returns</a></li>
                 <li><a href="#" className="hover:text-electric transition-colors">Shipping</a></li>
-                <li><a href="#" className="hover:text-electric transition-colors">Contact</a></li>
+                <li><a href="/learn-more" className="hover:text-electric transition-colors">Learn More</a></li>
               </ul>
             </div>
             <div>

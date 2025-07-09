@@ -10,10 +10,14 @@ import { Button } from "@/components/ui/button";
 // Import product images
 import tshirtBlack from "@/assets/tshirt-black.jpg";
 import tshirtWhite from "@/assets/tshirt-white.jpg";
+import tshirtGrayMandala from "@/assets/tshirt-gray-mandala.png";
+import tshirtWhiteCircle from "@/assets/tshirt-white-circle.png";
 import sneakersWhite from "@/assets/sneakers-white.jpg";
 import sneakersBlack from "@/assets/sneakers-black.jpg";
 import shortsBlack from "@/assets/shorts-black.jpg";
 import shortsGray from "@/assets/shorts-gray.jpg";
+import shortsWhiteUrbx from "@/assets/shorts-white-urbx.png";
+import shortsBlackUrbx from "@/assets/shorts-black-urbx.png";
 import jewelryChain from "@/assets/jewelry-chain.jpg";
 import jewelryBracelet from "@/assets/jewelry-bracelet.jpg";
 import socksBlack from "@/assets/socks-black.jpg";
@@ -198,27 +202,27 @@ const products: Product[] = [
   },
   {
     id: 13,
-    name: "Oversized Black Tee",
+    name: "URBX Mandala Tee",
     price: 95,
-    image: tshirtBlack,
+    image: tshirtGrayMandala,
     category: "T-Shirts",
-    description: "Relaxed fit premium t-shirt with oversized silhouette. Perfect for layering and street style.",
-    images: [tshirtBlack, tshirtWhite],
+    description: "Premium gray t-shirt featuring vibrant URBX mandala design. Bold streetwear statement piece.",
+    images: [tshirtGrayMandala],
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["Black", "White"],
+    colors: ["Gray"],
     rating: 4.6,
     reviews: 203
   },
   {
     id: 14,
-    name: "Vintage White Tee",
+    name: "URBX Circle Logo Tee",
     price: 79,
-    image: tshirtWhite,
+    image: tshirtWhiteCircle,
     category: "T-Shirts",
-    description: "Soft vintage-wash cotton tee with distressed details. Classic streetwear with authentic feel.",
-    images: [tshirtWhite, tshirtBlack],
+    description: "Clean white tee with iconic URBX circle logo. Classic minimalist streetwear design.",
+    images: [tshirtWhiteCircle],
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
-    colors: ["White", "Black"],
+    colors: ["White"],
     rating: 4.4,
     reviews: 178
   },
@@ -250,27 +254,27 @@ const products: Product[] = [
   },
   {
     id: 17,
-    name: "Cargo Shorts",
+    name: "URBX Black Shorts",
     price: 149,
-    image: shortsBlack,
+    image: shortsBlackUrbx,
     category: "Shorts",
-    description: "Functional cargo shorts with multiple pockets. Urban utility meets street style.",
-    images: [shortsBlack, shortsGray],
+    description: "Premium black shorts with bold white URBX branding. Essential streetwear for urban adventures.",
+    images: [shortsBlackUrbx],
     sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Black", "Gray"],
+    colors: ["Black"],
     rating: 4.3,
     reviews: 156
   },
   {
     id: 18,
-    name: "Mesh Athletic Shorts",
+    name: "URBX White Shorts",
     price: 109,
-    image: shortsGray,
+    image: shortsWhiteUrbx,
     category: "Shorts",
-    description: "Breathable mesh shorts perfect for active wear. Comfort and style for workouts and street.",
-    images: [shortsGray, shortsBlack],
+    description: "Clean white shorts with sleek black URBX logo. Perfect for summer streetwear looks.",
+    images: [shortsWhiteUrbx],
     sizes: ["S", "M", "L", "XL", "XXL"],
-    colors: ["Gray", "Black"],
+    colors: ["White"],
     rating: 4.2,
     reviews: 134
   },

@@ -14,6 +14,8 @@ import tshirtGrayMandala from "@/assets/tshirt-gray-mandala.png";
 import tshirtWhiteCircle from "@/assets/tshirt-white-circle.png";
 import sneakersWhite from "@/assets/sneakers-white.jpg";
 import sneakersBlack from "@/assets/sneakers-black.jpg";
+import sneakersUrbxTeal from "@/assets/sneakers-urbx-teal.png";
+import sneakersUrbxNavyOrange from "@/assets/sneakers-urbx-navy-orange.png";
 import shortsBlack from "@/assets/shorts-black.jpg";
 import shortsGray from "@/assets/shorts-gray.jpg";
 import shortsWhiteUrbx from "@/assets/shorts-white-urbx.png";
@@ -228,27 +230,27 @@ const products: Product[] = [
   },
   {
     id: 15,
-    name: "High-Top Street Sneakers",
+    name: "URBX Teal Sneakers",
     price: 279,
-    image: sneakersBlack,
+    image: sneakersUrbxTeal,
     category: "Sneakers",
-    description: "Premium high-top sneakers with leather construction. Statement footwear for urban adventures.",
-    images: [sneakersBlack, sneakersWhite],
+    description: "Premium URBX sneakers with teal accents and air cushioning. Modern streetwear meets athletic performance.",
+    images: [sneakersUrbxTeal],
     sizes: ["7", "8", "9", "10", "11", "12"],
-    colors: ["Black", "White"],
+    colors: ["Teal"],
     rating: 4.7,
     reviews: 341
   },
   {
     id: 16,
-    name: "Low-Top Urban Sneakers",
+    name: "URBX Navy Orange Sneakers",
     price: 229,
-    image: sneakersWhite,
+    image: sneakersUrbxNavyOrange,
     category: "Sneakers",
-    description: "Minimalist low-top design with premium materials. Versatile sneakers for any outfit.",
-    images: [sneakersWhite, sneakersBlack],
+    description: "Stylish URBX sneakers with navy and orange accents. Perfect blend of comfort and urban style.",
+    images: [sneakersUrbxNavyOrange],
     sizes: ["7", "8", "9", "10", "11", "12"],
-    colors: ["White", "Black"],
+    colors: ["Navy"],
     rating: 4.5,
     reviews: 287
   },

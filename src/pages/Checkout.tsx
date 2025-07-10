@@ -7,6 +7,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, CreditCard, Truck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface CartItem {
   id: number;
@@ -27,6 +29,7 @@ interface CheckoutProps {
 
 const Checkout = ({ cartItems, onOrderComplete, onBackToCart }: CheckoutProps) => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     email: "",
     firstName: "",
@@ -53,13 +56,68 @@ const Checkout = ({ cartItems, onOrderComplete, onBackToCart }: CheckoutProps) =
     e.preventDefault();
     setIsProcessing(true);
     
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    alert(`Order processed successfully! Total: $${finalTotal.toFixed(2)}\nThank you for your purchase!`);
-    onOrderComplete();
-    setIsProcessing(false);
-    navigate("/");
+    try {
+      // Simulate payment processing
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Save order to database
+      const { data: orderData, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          email: formData.email,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          post_code: formData.postCode,
+          country: formData.country,
+          payment_method: formData.paymentMethod,
+          subtotal: total,
+          shipping: shipping,
+          total: finalTotal
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // Save order items
+      const orderItems = cartItems.map(item => ({
+        order_id: orderData.id,
+        product_id: item.id,
+        product_name: item.name,
+        product_image: item.image,
+        product_category: item.category,
+        price: item.price,
+        quantity: item.quantity,
+        size: item.size || null,
+        color: item.color || null
+      }));
+
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .insert(orderItems);
+
+      if (itemsError) throw itemsError;
+
+      toast({
+        title: "Order Successful!",
+        description: `Your order has been processed successfully. Total: $${finalTotal.toFixed(2)}`,
+      });
+      
+      onOrderComplete();
+      navigate("/");
+    } catch (error) {
+      console.error('Error processing order:', error);
+      toast({
+        title: "Order Failed",
+        description: "There was an error processing your order. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const isFormValid = formData.email && formData.firstName && formData.lastName && 

@@ -6,6 +6,11 @@ import ProductDetail from "@/components/ProductDetail";
 import Cart from "@/components/Cart";
 import Checkout from "@/pages/Checkout";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 // Import product images
 import tshirtBlack from "@/assets/tshirt-black.jpg";
@@ -317,6 +322,9 @@ const Index = () => {
     const saved = localStorage.getItem('wishlist');
     return saved ? JSON.parse(saved) : [];
   });
+  const [notifyEmail, setNotifyEmail] = useState("");
+  const [isNotifyDialogOpen, setIsNotifyDialogOpen] = useState(false);
+  const { toast } = useToast();
 
   const addToCart = (product: Product) => {
     setCartItems(prevItems => {
@@ -376,6 +384,40 @@ const Index = () => {
 
   const isInWishlist = (productId: number) => {
     return wishlistItems.some(item => item.id === productId);
+  };
+
+  const handleNotifySubmit = async () => {
+    if (!notifyEmail) {
+      toast({
+        title: "Error",
+        description: "Please enter your email address",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from('email_notifications')
+        .insert([{ email: notifyEmail, type: 'new_drop_alert' }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "You'll be the first to know about our new drops!",
+      });
+      
+      setNotifyEmail("");
+      setIsNotifyDialogOpen(false);
+    } catch (error) {
+      console.error('Error saving notification:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save notification. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const productsByCategory = products.reduce((acc, product) => {
@@ -438,9 +480,39 @@ const Index = () => {
             Be the first to get your hands on our latest streetwear collection. 
             Limited quantities, unlimited style.
           </p>
-          <Button variant="electric" size="lg">
-            Notify Me
-          </Button>
+          <Dialog open={isNotifyDialogOpen} onOpenChange={setIsNotifyDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="electric" size="lg">
+                Notify Me
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-md">
+              <DialogHeader>
+                <DialogTitle>Get Notified About New Drops</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="notify-email">Email Address</Label>
+                  <Input
+                    id="notify-email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={notifyEmail}
+                    onChange={(e) => setNotifyEmail(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleNotifySubmit()}
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={() => setIsNotifyDialogOpen(false)} className="flex-1">
+                    Cancel
+                  </Button>
+                  <Button variant="electric" onClick={handleNotifySubmit} className="flex-1">
+                    Subscribe
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </section>
       </main>
 

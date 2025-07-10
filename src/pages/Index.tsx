@@ -557,6 +557,7 @@ const Index = () => {
           </div>
           <div className="border-t border-primary-foreground/20 mt-8 pt-8 text-center text-sm opacity-60">
             © 2024 URBX. All rights reserved. Premium streetwear for the urban generation.
+            <a href="/admin" className="ml-4 hover:text-electric transition-colors opacity-40 hover:opacity-100">Admin</a>
           </div>
         </div>
       </footer>

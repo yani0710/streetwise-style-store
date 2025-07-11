@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 
 // Import product images
 import tshirtBlack from "@/assets/tshirt-black.jpg";
@@ -539,10 +540,10 @@ const Index = () => {
             <div>
               <h5 className="font-semibold mb-4">Support</h5>
               <ul className="space-y-2 text-sm opacity-80">
-                <li><a href="#" className="hover:text-electric transition-colors">Size Guide</a></li>
-                <li><a href="#" className="hover:text-electric transition-colors">Returns</a></li>
-                <li><a href="#" className="hover:text-electric transition-colors">Shipping</a></li>
-                <li><a href="/learn-more" className="hover:text-electric transition-colors">Learn More</a></li>
+                <li><Link to="/size-guide" className="hover:text-electric transition-colors">Size Guide</Link></li>
+                <li><Link to="/returns" className="hover:text-electric transition-colors">Returns</Link></li>
+                <li><Link to="/shipping" className="hover:text-electric transition-colors">Shipping</Link></li>
+                <li><Link to="/learn-more" className="hover:text-electric transition-colors">Learn More</Link></li>
               </ul>
             </div>
             <div>

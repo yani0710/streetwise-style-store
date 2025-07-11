@@ -21,24 +21,24 @@ const Header = ({ cartItemCount, onCartOpen }: HeaderProps) => {
         </div>
         
         <nav className="hidden md:flex items-center space-x-8">
-          <a href="#t-shirts" className="text-sm font-medium hover:text-electric transition-colors">
+          <Link to="/#t-shirts" className="text-sm font-medium hover:text-electric transition-colors">
             T-Shirts
-          </a>
-          <a href="#shorts" className="text-sm font-medium hover:text-electric transition-colors">
+          </Link>
+          <Link to="/#shorts" className="text-sm font-medium hover:text-electric transition-colors">
             Shorts
-          </a>
-          <a href="#sneakers" className="text-sm font-medium hover:text-electric transition-colors">
+          </Link>
+          <Link to="/#sneakers" className="text-sm font-medium hover:text-electric transition-colors">
             Sneakers
-          </a>
-          <a href="#socks" className="text-sm font-medium hover:text-electric transition-colors">
+          </Link>
+          <Link to="/#socks" className="text-sm font-medium hover:text-electric transition-colors">
             Socks
-          </a>
-          <a href="#jewelry" className="text-sm font-medium hover:text-electric transition-colors">
+          </Link>
+          <Link to="/#jewelry" className="text-sm font-medium hover:text-electric transition-colors">
             Jewelry
-          </a>
-          <a href="#fragrances" className="text-sm font-medium hover:text-electric transition-colors">
+          </Link>
+          <Link to="/#fragrances" className="text-sm font-medium hover:text-electric transition-colors">
             Fragrances
-          </a>
+          </Link>
         </nav>
 
         <div className="flex items-center gap-2">

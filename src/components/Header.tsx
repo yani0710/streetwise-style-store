@@ -21,24 +21,42 @@ const Header = ({ cartItemCount, onCartOpen }: HeaderProps) => {
         </div>
         
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/#t-shirts" className="text-sm font-medium hover:text-electric transition-colors">
+          <button 
+            onClick={() => document.getElementById('t-shirts')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-sm font-medium hover:text-electric transition-colors"
+          >
             T-Shirts
-          </Link>
-          <Link to="/#shorts" className="text-sm font-medium hover:text-electric transition-colors">
+          </button>
+          <button 
+            onClick={() => document.getElementById('shorts')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-sm font-medium hover:text-electric transition-colors"
+          >
             Shorts
-          </Link>
-          <Link to="/#sneakers" className="text-sm font-medium hover:text-electric transition-colors">
+          </button>
+          <button 
+            onClick={() => document.getElementById('sneakers')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-sm font-medium hover:text-electric transition-colors"
+          >
             Sneakers
-          </Link>
-          <Link to="/#socks" className="text-sm font-medium hover:text-electric transition-colors">
+          </button>
+          <button 
+            onClick={() => document.getElementById('socks')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-sm font-medium hover:text-electric transition-colors"
+          >
             Socks
-          </Link>
-          <Link to="/#jewelry" className="text-sm font-medium hover:text-electric transition-colors">
+          </button>
+          <button 
+            onClick={() => document.getElementById('jewelry')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-sm font-medium hover:text-electric transition-colors"
+          >
             Jewelry
-          </Link>
-          <Link to="/#fragrances" className="text-sm font-medium hover:text-electric transition-colors">
+          </button>
+          <button 
+            onClick={() => document.getElementById('fragrances')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-sm font-medium hover:text-electric transition-colors"
+          >
             Fragrances
-          </Link>
+          </button>
         </nav>
 
         <div className="flex items-center gap-2">

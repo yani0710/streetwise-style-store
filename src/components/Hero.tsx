@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import heroBg from "@/assets/hero-bg.jpg";
 
 const Hero = () => {
@@ -27,13 +28,15 @@ const Hero = () => {
           >
             Shop Collection
           </Button>
-          <Button 
-            variant="outline" 
-            size="lg"
-            className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur"
-          >
-            Learn More
-          </Button>
+          <Link to="/learn-more">
+            <Button 
+              variant="outline" 
+              size="lg"
+              className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary bg-white/10 backdrop-blur"
+            >
+              Learn More
+            </Button>
+          </Link>
         </div>
       </div>
       

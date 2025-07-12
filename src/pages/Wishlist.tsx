@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Heart, ShoppingCart, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import ProductCard from "@/components/ProductCard";
+import { useToast } from "@/hooks/use-toast";
 
 interface Product {
   id: number;
@@ -27,6 +28,7 @@ interface WishlistProps {
 
 const Wishlist = ({ wishlistItems = [], onRemoveFromWishlist, onAddToCart }: WishlistProps) => {
   const [localWishlist, setLocalWishlist] = useState<Product[]>([]);
+  const { toast } = useToast();
 
   useEffect(() => {
     // Load wishlist from localStorage if no props provided
@@ -53,8 +55,30 @@ const Wishlist = ({ wishlistItems = [], onRemoveFromWishlist, onAddToCart }: Wis
   const handleAddToCart = (product: Product) => {
     if (onAddToCart) {
       onAddToCart(product);
+    } else {
+      // Handle cart locally via localStorage
+      const existingCart = localStorage.getItem('cart');
+      const cartItems = existingCart ? JSON.parse(existingCart) : [];
+      
+      const existingItem = cartItems.find((item: any) => item.id === product.id);
+      let updatedCart;
+      
+      if (existingItem) {
+        updatedCart = cartItems.map((item: any) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        updatedCart = [...cartItems, { ...product, quantity: 1 }];
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(updatedCart));
+      toast({
+        title: "Added to cart",
+        description: `${product.name} has been added to your cart.`,
+      });
     }
-    // Could also show a toast notification here
   };
 
   const displayWishlist = wishlistItems.length > 0 ? wishlistItems : localWishlist;

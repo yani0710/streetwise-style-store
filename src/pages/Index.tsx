@@ -315,7 +315,10 @@ const products: Product[] = [
 ];
 
 const Index = () => {
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
+    const saved = localStorage.getItem('cart');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [showCheckout, setShowCheckout] = useState(false);
@@ -330,19 +333,27 @@ const Index = () => {
   const addToCart = (product: Product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
+      let updatedItems;
       if (existingItem) {
-        return prevItems.map(item =>
+        updatedItems = prevItems.map(item =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
+      } else {
+        updatedItems = [...prevItems, { ...product, quantity: 1 }];
       }
-      return [...prevItems, { ...product, quantity: 1 }];
+      localStorage.setItem('cart', JSON.stringify(updatedItems));
+      return updatedItems;
     });
   };
 
   const removeFromCart = (id: number) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
+    setCartItems(prevItems => {
+      const updatedItems = prevItems.filter(item => item.id !== id);
+      localStorage.setItem('cart', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
   };
 
   const updateQuantity = (id: number, quantity: number) => {
@@ -350,11 +361,13 @@ const Index = () => {
       removeFromCart(id);
       return;
     }
-    setCartItems(prevItems =>
-      prevItems.map(item =>
+    setCartItems(prevItems => {
+      const updatedItems = prevItems.map(item =>
         item.id === id ? { ...item, quantity } : item
-      )
-    );
+      );
+      localStorage.setItem('cart', JSON.stringify(updatedItems));
+      return updatedItems;
+    });
   };
 
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -366,6 +379,7 @@ const Index = () => {
 
   const handleOrderComplete = () => {
     setCartItems([]);
+    localStorage.removeItem('cart');
     setShowCheckout(false);
   };
 
